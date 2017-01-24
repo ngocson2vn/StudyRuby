@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mysql -uroot -proot -e "select id, created_at, attempts from delayed_jobs" app_sample_production 2>/dev/null
+mysql -uroot -proot -e "select created_at, id from delayed_jobs where id > 0 order by created_at asc limit 1" app_sample_production 2>/dev/null
+mysql -uroot -proot -e "select count(*) from delayed_jobs where id > 0 union (select count(attempts) from delayed_jobs where attempts > 0 and id > 0) union (select created_at from delayed_jobs where id > 0 order by created_at asc limit 1)" app_sample_production 2>/dev/null
