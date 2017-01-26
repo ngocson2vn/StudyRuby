@@ -1,0 +1,32 @@
+#!/bin/bash
+
+action=$1
+
+if [ "x$action" == "x" ]; then
+	echo "Please provide argument stop | start"
+	exit
+fi
+
+echo "Action $action"
+
+MAX_PS=4
+
+case $action in
+	stop)
+		pidlist=$(sudo ps -ef | grep sidekiq | grep -v sidekiq_restart | grep -v grep | awk '{print $2}')
+
+		for pid in $pidlist; do
+			echo "kill $pid"
+			sudo kill -9 $pid
+		done
+		;;
+	start)
+		for i in $(seq 1 $MAX_PS); do
+			echo $i
+			bundle exec sidekiq -L log/sidekiq-$i.log -d
+		done
+		;;
+	*)
+		echo "Please provide argument stop | start"
+		;;
+esac

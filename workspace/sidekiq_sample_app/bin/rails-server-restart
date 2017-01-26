@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+output = `netstat -tlpn 2>/dev/null | grep puma | awk '{print $7}'`
+pid, *server = output.split(/\//)
+
+if pid != nil
+	print "Kill #{pid}", `kill -9 #{pid}`, "\n"
+end
+
+print `rails server -d`
