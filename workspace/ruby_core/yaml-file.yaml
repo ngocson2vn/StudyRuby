@@ -1,0 +1,4 @@
+cloudfront:
+  hostname_mappings:
+    <%= ENV['KEY1'] %>: "requl-staging.cdn.finc.com"
+    <%= ENV['KEY2'] %>: "activity-timeline-staging.cdn.finc.com"
